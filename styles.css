@@ -2,3 +2,39 @@
     margin: 0;
     padding: 0;
 }
+
+html, body {
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1200px 1fr;
+    grid-template-rows: 1fr 600px;
+}
+
+.board {
+    width: 400px;
+    height: 400px;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    border: 2px solid black;
+    justify-self: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.board-square {
+    border: 1px solid black;
+}
+
+.board-square.X {
+    background-color: black;
+}
+
+.board-square.O {
+    background-color: blue;
+}
