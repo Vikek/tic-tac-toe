@@ -3,6 +3,13 @@
     padding: 0;
 }
 
+:root {
+    --board-size: 300px;
+    --square-size: calc(var(--board-size) / 3);
+    --main-background-color: #1e293b;
+    --mark-color: #0a0a0a;
+}
+
 html, body {
     height: 100%;
     font-family: Arial, Helvetica, sans-serif;
@@ -13,28 +20,80 @@ html, body {
     display: grid;
     grid-template-columns: 1fr 1200px 1fr;
     grid-template-rows: 1fr 600px;
+    background-color: var(--main-background-color);
 }
 
 .board {
-    width: 400px;
-    height: 400px;
+    width: var(--board-size);
+    height: var(--board-size);
     grid-column: 2 / 3;
     grid-row: 2 / 3;
-    border: 2px solid black;
     justify-self: center;
+    justify-content: center;
+    align-content: center;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(3, auto);
 }
 
 .board-square {
-    border: 1px solid black;
+    width: var(--square-size);
+    height: var(--square-size);
+    border: 1px solid var(--mark-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
-.board-square.X {
-    background-color: black;
+.board-square.X::before,
+.board-square.X::after {
+    content: '';
+    position: absolute;
+    width: calc(var(--square-size) * 0.13);
+    height: var(--square-size);
+    background-color: var(--mark-color);
 }
 
-.board-square.O {
-    background-color: blue;
+.board-square.X::before {
+    transform: rotate(45deg);
+}
+
+.board-square.X::after {
+    transform: rotate(-45deg);
+}
+
+.board-square.O::before,
+.board-square.O::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+}
+
+.board-square.O::before {
+    width: calc(var(--square-size) * 0.9);
+    height: calc(var(--square-size) * 0.9);
+    background-color: var(--mark-color);
+}
+
+.board-square.O::after {
+    width: calc(var(--square-size) * 0.65);
+    height: calc(var(--square-size) * 0.65);
+    background-color: var(--main-background-color);
+}
+
+.board-square:nth-child(-n + 3) {
+    border-top: none;
+}
+
+.board-square:nth-child(3n + 1) {
+    border-left: none;
+}
+
+.board-square:nth-child(3n + 3) {
+    border-right: none;
+}
+
+.board-square:nth-child(n + 7) {
+    border-bottom: none;
 }
