@@ -6,8 +6,9 @@
 :root {
     --board-size: 300px;
     --square-size: calc(var(--board-size) / 3);
-    --main-background-color: #1e293b;
-    --mark-color: #0a0a0a;
+    --main-background-color: #111827;
+    --mark-color: #e5e7eb;
+    --text-color: #fafafa;
 }
 
 html, body {
@@ -96,4 +97,44 @@ html, body {
 
 .board-square:nth-child(n + 7) {
     border-bottom: none;
+}
+
+.game-end-message {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    background-color: rgb(100, 100, 100, 0.6);
+    width: calc(var(--board-size) * 1.2);
+    height: calc(var(--board-size) * 1.2);
+    top: 330px;
+    border: var(--mark-color);
+    border-radius: 10px;
+}
+
+.game-end-message.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-end-message-text {
+    color: var(--text-color);
+    font-size: 48px;
+}
+
+.game-end-message .restart-btn {
+    width: 100px;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    background-color: #475569;
+    color: var(--text-color);
 }
