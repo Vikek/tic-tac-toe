@@ -13,8 +13,6 @@ const Gameboard = (() => {
 
     const setMark = (index, mark) => {
         gameboard[index] = mark;
-
-        console.log(gameboard[index]);
         _render(index);
     }
 
@@ -31,7 +29,11 @@ const Gameboard = (() => {
         })
     }
 
-    return { setMark, checkWin }
+    const resetBoard = () => {
+        gameboard = new Array(9);
+    }
+
+    return { setMark, checkWin, resetBoard }
 })();
 
 const Player = (mark) => {
@@ -46,6 +48,7 @@ const Game = (() => {
     const computer = Player("O");
 
     let playerTurn = true;
+    let turnCounter = 0;
 
     const boardSquares = document.querySelectorAll(".board-square");
     boardSquares.forEach(square => {
@@ -54,29 +57,51 @@ const Game = (() => {
 
     function makeMove(e) {
         const squareIndex = Array.from(boardSquares).indexOf(e.target);
+        turnCounter++;
 
         if(playerTurn) {
             let playerMark = player.getMark();
             Gameboard.setMark(squareIndex, playerMark);
             if(Gameboard.checkWin(playerMark)) { // player win
-                let messageText = document.querySelector(".game-end-message-text");
-                messageText.textContent = "You win!"
-
-                let message = document.querySelector(".game-end-message");
-                message.classList.toggle("active");
+                gameEndMessage("You win!");
+            } else if(turnCounter >= 9) {
+                gameEndMessage("Draw!");
             }
         } else {
             let computerMark = computer.getMark();
             Gameboard.setMark(squareIndex, computerMark);
             if(Gameboard.checkWin(computerMark)) { // computer win
-                let messageText = document.querySelector(".game-end-message-text");
-                messageText.textContent = "You lose!"
-
-                let message = document.querySelector(".game-end-message");
-                message.classList.toggle("active");
+                gameEndMessage("You lose!");
+            } else if(turnCounter >= 9) {
+                gameEndMessage("Draw!");
             }
         }
 
         playerTurn = !playerTurn;
+    }
+
+    function gameEndMessage(message) {
+        const messageText = document.querySelector(".game-end-message-text");
+        messageText.textContent = message;
+
+        const messageContainer = document.querySelector(".game-end-message");
+        messageContainer.classList.toggle("active");
+
+        const restartButton = document.querySelector(".restart-btn");
+        restartButton.addEventListener("click", resetGame);
+
+        function resetGame() {
+            Gameboard.resetBoard();
+            turnCounter = 0;
+            boardSquares.forEach(square => {
+                square.classList.remove(player.getMark());
+                square.classList.remove(computer.getMark());
+                square.removeEventListener("click", makeMove, { once: true });
+                square.addEventListener("click", makeMove, { once: true });
+            });
+            messageText.textContent = "";
+            messageContainer.classList.toggle("active");
+            restartButton.removeEventListener("click", resetGame);
+        }
     }
 })();
