@@ -138,3 +138,8 @@ html, body {
     background-color: #475569;
     color: var(--text-color);
 }
+
+.game-end-message .restart-btn:hover {
+    background-color: #6b81a0;
+    cursor: pointer;
+}
